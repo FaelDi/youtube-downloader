@@ -1,0 +1,5 @@
+yt-dlp==2024.12.23
+redis==5.0.8
+psycopg2-binary==2.9.10
+minio==7.2.12
+python-dotenv==1.0.1

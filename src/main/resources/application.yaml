@@ -1,3 +1,58 @@
 spring:
   application:
     name: youtube.downloader
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/media_downloader}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: media_downloader
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: media_downloader
+    baseline-on-migrate: false
+    validate-on-migrate: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: ${REDIS_POOL_MAX_ACTIVE:8}
+          max-idle: ${REDIS_POOL_MAX_IDLE:8}
+          min-idle: ${REDIS_POOL_MIN_IDLE:0}
+          max-wait: -1ms
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  allowed-domains: ${ALLOWED_DOMAINS:youtube.com,youtu.be,www.youtube.com}
+  rate-limit:
+    requests-per-minute: ${RATE_LIMIT_RPM:10}
+
+redis:
+  queue:
+    download-jobs: ${REDIS_QUEUE:download:jobs}
+    ttl-seconds: ${REDIS_QUEUE_TTL:86400}

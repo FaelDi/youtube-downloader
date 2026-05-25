@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Secrets ###
+.env
+*.env
+
+### Python ###
+__pycache__/
+*.pyc
+*.pyo
+
+### Review artifacts ###
+code-review-report.md
